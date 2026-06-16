@@ -5,7 +5,7 @@ Ecoloop is a high-performance sustainability intelligence dashboard designed to 
 The application implements the mathematical standards defined by the **Ellen MacArthur Foundation (EMF)** for product circularity audits, helping product teams and engineers design waste-free products and verify manufacturing compliance under global standards like the EU Ecodesign Regulation (ESPR).
 
 ## Key Features
-
+ 
 - **Circularity Index (MCI) Calculations:** Automatically computes Material Circularity Index (MCI) and Linear Flow Index (LFI) based on material weights, recycled content, and end-of-life recovery rates.
 - **Supply Chain Carbon Modeling:** Tracks greenhouse gas sourcing offsets (recycled vs. virgin material sourcing coefficients) and logistics transport emissions.
 - **Dynamic Bill of Materials (BOM) Editor:** Interactive UI sliders to adjust individual component parameters in real time and see updates on the composition and disposal mass charts.

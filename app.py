@@ -4,12 +4,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 import time
 
-# Import modular components
+
 from data import MATERIAL_DB, LOGISTICS_FACTORS, LOGISTICS_NAMES, PRODUCT_PRESETS
 from engine import calculate_circularity_metrics
 from styles import GLASS_THEME_CSS, draw_mci_gauge
 
-# 1. PAGE SETUP & CONFIGURATION
+
 st.set_page_config(
     page_title="Ecoloop // Circular Design Engine",
     page_icon=None,
@@ -17,10 +17,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Apply custom dark glassmorphic styling
 st.markdown(GLASS_THEME_CSS, unsafe_allow_html=True)
 
-# 2. STATE INITIALIZATION IN SESSION STATE
 if 'product_name' not in st.session_state:
     st.session_state.product_name = PRODUCT_PRESETS['smartphone']['name']
     st.session_state.lifespan = PRODUCT_PRESETS['smartphone']['lifespan']
@@ -33,7 +31,7 @@ if 'product_name' not in st.session_state:
         st.session_state[f"rin_{c['id']}"] = c['recycled_input']
         st.session_state[f"rout_{c['id']}"] = c['recyclability']
 
-# Callback to load a preset
+
 def load_preset(preset_key):
     preset = PRODUCT_PRESETS[preset_key]
     st.session_state.product_name = preset['name']
@@ -43,33 +41,31 @@ def load_preset(preset_key):
     st.session_state.logistics_distance = preset['logistics_distance']
     st.session_state.components = [dict(c) for c in preset['components']]
     st.session_state.active_preset = preset_key
-    # Sync widget sliders in session state
+
     for c in st.session_state.components:
         st.session_state[f"rin_{c['id']}"] = c['recycled_input']
         st.session_state[f"rout_{c['id']}"] = c['recyclability']
 
-# Callback to trigger lifecycle circularity optimization
 def run_optimization():
     if not st.session_state.components:
         st.session_state.opt_error = "Add some components to your Bill of Materials first before running optimization!"
     else:
-        # Shift components to circular targets
+
         for c in st.session_state.components:
             c['recycled_input'] = 90
             c['recyclability'] = 95
             st.session_state[f"rin_{c['id']}"] = 90
             st.session_state[f"rout_{c['id']}"] = 95
         
-        # Optimize logistics
+   
         st.session_state.transport_mode = 'sea'
         
-        # Extend lifespan relative to category baseline
         st.session_state.lifespan = st.session_state.industry_lifespan * 1.5
         
         st.session_state.active_preset = 'custom'
         st.session_state.success_message = "Circularity optimizations applied: Sourcing shifted to 90% recycled inputs, 95% EoL recyclability, sea transport, and product longevity extended by 50% relative to industry benchmarks."
 
-# 3. RUN CALCULATIONS
+
 metrics = calculate_circularity_metrics(
     components=st.session_state.components,
     lifespan=st.session_state.lifespan,
@@ -78,7 +74,6 @@ metrics = calculate_circularity_metrics(
     logistics_distance=st.session_state.logistics_distance
 )
 
-# 4. HEADER COMPONENT
 st.markdown("""
 <div class="app-title-container">
     <div style="flex-grow: 1;">
@@ -88,7 +83,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 5. SIDEBAR - PRODUCT SETTINGS & BUILDER
 with st.sidebar:
     st.markdown("### Configuration Panel")
     
@@ -148,8 +142,7 @@ with st.sidebar:
             st.session_state[f"rout_{new_comp['id']}"] = new_comp['recyclability']
             st.rerun()
 
-# 6. MAIN INTERFACE LAYOUT
-# Row 1: KPI Statistics Card Widgets
+
 kpi_mci, kpi_lfi, kpi_carbon, kpi_feedstock = st.columns(4)
 
 with kpi_mci:
@@ -199,7 +192,7 @@ with kpi_feedstock:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Row 2: Two-column layout (Bill of Materials editor on Left, Charts on Right)
+
 main_left, main_right = st.columns([1.3, 1.0])
 
 with main_left:
@@ -335,7 +328,6 @@ with main_right:
     else:
         st.warning("Please configure your Bill of Materials to generate visualization graphs.")
 
-# Row 3: Design Optimization Recommendations & System Actions
 rec_col, action_col = st.columns([1.3, 1.0])
 
 with rec_col:

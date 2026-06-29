@@ -13,7 +13,7 @@ The application implements the mathematical standards defined by the **Ellen Mac
 - **Compliance Export:** Generates and exports comprehensive CSV sourcing audit reports suitable for regulatory reviews.
 
 ## Mathematical Model (EMF Standard)
-
+ 
 The engine calculates metrics utilizing the following formulas:
 - **Virgin Material Sourcing Fraction (V):**
   $$V = \sum M_i \times (1 - R_{in,i})$$
